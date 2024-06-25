@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.CommentMapper">
+
+    <update id="updateState">
+        update t_comment set state = #{state} 
+        where uid in
+        <foreach collection="uids" item="uid" index="" open="(" close=")" separator=", ">
+            #{uid}
+        </foreach>
+    </update>
+    
+    <select id="selectByBlogUid" resultType="com.example.demo.entity.Comment">
+        select uid, blog_uid, author, author_ip, create_time, content, state, parent_id
+        from t_comment where blog_uid = #{blogUid}
+    </select>
+</mapper>
