@@ -8,6 +8,7 @@ import com.example.demo.global.Result;
 import com.example.demo.mapper.CommentMapper;
 import com.example.demo.service.CommentService;
 import com.example.demo.utils.StringUtils;
+import com.example.demo.vo.CommentVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,11 +43,12 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     }
 
     @Override
-    public Result selectByBlogUid(String blogUid) {
+    public Result selectByBlogUid(String blogUid, Integer currentPage, Integer pageSize) {
         List<Comment> list = commentMapper.selectByBlogUid(blogUid);
         Map<String, List<Comment>> map = new HashMap<>();
         List<Comment> parentList = new ArrayList<>();
         List<Comment> childList;
+        List<Comment> resultList = new ArrayList<>();
         for (Comment comment : list) {
             if(map.get(comment.getParentId()) != null){
                 childList = map.get(comment.getParentId());
@@ -61,10 +63,41 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
             }
         }
         for (Comment comment: parentList) {
-            for (Comment child : map.get(comment.getParentId())){
-                comment.getChildrenNode().add(child);
+            comment.setChildrenNode(new ArrayList<>());
+            if (map.get(comment.getUid())!=null && map.get(comment.getUid()).size()>0){
+                for (Comment child : map.get(comment.getUid())){
+                    comment.getChildrenNode().add(child);
+                }
+            }
+            int childTotal = comment.getChildrenNode().size();
+            comment.setChildTotal(childTotal);
+        }
+        CommentVo commentVo = new CommentVo();
+        int total = parentList.size();
+        commentVo.setTotal(total);
+        if ((currentPage - 1) * pageSize < total) {
+            for (int i = (currentPage - 1) * pageSize; i < total && i < currentPage * pageSize; i++) {
+                resultList.add(parentList.get(i));
             }
         }
-        return Result.succ(parentList);
+        commentVo.setCommentList(resultList);
+        return Result.succ(commentVo);
+    }
+
+    @Override
+    public Result deleteByUid(String uid) {
+        int flag = commentMapper.deleteById(uid);
+        if (flag > 0) {
+            return Result.succ("删除成功");
+        }else {
+            return Result.fail("删除失败");
+        }
+    }
+
+    @Override
+    public Result getCount(String blogUid) {
+        LambdaQueryWrapper<Comment> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Comment::getBlogUid, blogUid);
+        return Result.succ(commentMapper.selectCount(wrapper));
     }
 }

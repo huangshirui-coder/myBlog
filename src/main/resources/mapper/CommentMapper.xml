@@ -12,7 +12,7 @@
     </update>
     
     <select id="selectByBlogUid" resultType="com.example.demo.entity.Comment">
-        select uid, blog_uid, author, author_ip, create_time, content, state, parent_id
+        select uid, blog_uid, author, author_ip, create_time, content, state, parent_id, avatar, to_username
         from t_comment where blog_uid = #{blogUid}
     </select>
 </mapper>

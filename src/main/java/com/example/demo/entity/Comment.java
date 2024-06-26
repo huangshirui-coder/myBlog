@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
@@ -57,8 +58,32 @@ public class Comment extends Model {
     private String parentId;
 
     /*
+    头像
+     */
+    private String avatar;
+
+    /*
+    回复的人的用户名
+     */
+    private String toUsername;
+    /*
     孩子节点，子评论
      */
     @Transient
+    @TableField(exist = false)
     private List<Comment> childrenNode;
+
+    /*
+    该节点的孩子总数 可以为0
+     */
+    @Transient
+    @TableField(exist = false)
+    private int childTotal;
+
+    /*
+    主要用来控制该父节点打开的回复页数
+     */
+    @Transient
+    @TableField(exist = false)
+    private int current;
 }

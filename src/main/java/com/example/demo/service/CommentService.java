@@ -11,5 +11,9 @@ public interface CommentService extends IService<Comment> {
 
     Result updateState(CommentDto commentDto);
 
-    Result selectByBlogUid(String blogUid);
+    Result selectByBlogUid(String blogUid, Integer current, Integer size);
+
+    Result deleteByUid(String uid);
+
+    Result getCount(String blogUid);
 }
