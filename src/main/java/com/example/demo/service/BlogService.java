@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.demo.entity.Blog;
+import com.example.demo.global.Result;
 import com.example.demo.pojo.BlogPage;
 import com.example.demo.pojo.Pagination;
 
@@ -64,6 +65,21 @@ public interface BlogService extends IService<Blog> {
      * @return int
      **/
     public int insertOne(Blog blog);
+
+    /*
+    点击数+1
+     */
+    public Result updateClickCount(String uid);
+
+    /*
+    点赞数+1
+     */
+    public Result updateLikeCount(String uid);
+
+    /*
+    评论数+1
+     */
+    public Result updateCommentCount(String uid);
 
     /*
         获取热门博客

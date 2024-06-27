@@ -6,6 +6,7 @@ import com.example.demo.dto.CommentDto;
 import com.example.demo.entity.Comment;
 import com.example.demo.global.Result;
 import com.example.demo.mapper.CommentMapper;
+import com.example.demo.service.BlogService;
 import com.example.demo.service.CommentService;
 import com.example.demo.utils.StringUtils;
 import com.example.demo.vo.CommentVo;
@@ -21,11 +22,14 @@ import java.util.Map;
 public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> implements CommentService {
     @Autowired
     private CommentMapper commentMapper;
+    @Autowired
+    private BlogService blogService;
 
     @Override
     public Result insert(Comment comment) {
         int flag = commentMapper.insert(comment);
         if (flag > 0) {
+            blogService.updateCommentCount(comment.getBlogUid());
             return Result.succ("插入成功");
         }else {
             return Result.fail("插入失败");

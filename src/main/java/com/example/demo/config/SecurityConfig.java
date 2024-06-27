@@ -55,7 +55,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .authorizeRequests()
             // 对于登录接口 允许匿名访问
-            .antMatchers("/comment/insert", "/comment/selectByBlogUid", "/comment/getCommentCount", "/blog/getBlogByBSUid","/blog/selectOneByUid","/blog/getHotBlog","/webInfo/getInfo", "/blog/selectAll", "/blog/getSortArticles", "/blogsort/getList", "/userLogin/login", "/user/register", "/swagger**/**", "/webjars/**", "/v3/**", "/doc.html").anonymous()
+            .antMatchers("/userLogin/login", "/user/register", "/swagger**/**", "/webjars/**", "/v3/**", "/doc.html").anonymous()
+            .antMatchers("/comment/insert", "/comment/selectByBlogUid", "/comment/getCommentCount", "/blog/getBlogByBSUid","/blog/selectOneByUid","/blog/getHotBlog","/webInfo/getInfo", "/blog/selectAll", "/blog/getSortArticles", "/blogsort/getList").permitAll()
             // 除上面外的所有请求全部需要鉴权认证
             .anyRequest().authenticated();
 
@@ -74,10 +75,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
          * @Param [http]
          * @return void
          **/
-        http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).
-                accessDeniedHandler(accessDeniedHandler);
+//        http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).
+//                accessDeniedHandler(accessDeniedHandler);
 
         //允许跨域
         http.cors();
+
+
     }
 }

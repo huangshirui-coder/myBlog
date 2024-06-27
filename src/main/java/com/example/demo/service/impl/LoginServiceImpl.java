@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class LoginServiceImpl implements LoginService {
@@ -47,7 +48,7 @@ public class LoginServiceImpl implements LoginService {
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         String userId = loginUser.getUser().getId().toString();
         String jwt = JwtUtils.generateToken(userId);
-        redisCache.setCacheObject(RedisConf.LOGIN + RedisConf.COLON + userId, loginUser);
+        redisCache.setCacheObject(RedisConf.LOGIN + RedisConf.COLON + userId, loginUser, 1, TimeUnit.DAYS);
         Map<String, String> map = new HashMap<>();
         map.put(VueConf.TOKEN, jwt);
         map.put("userName", loginUser.getUser().getUserName());

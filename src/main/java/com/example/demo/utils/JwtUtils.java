@@ -28,10 +28,6 @@ public class JwtUtils {
         Date nowDate = new Date();
         Date expireDate = new Date(nowDate.getTime() + 1000 * expire);
 
-        System.out.println(expire);
-        System.out.println(header);
-        System.out.println(secret);
-
         return Jwts.builder()
                 .setHeaderParam("typ", "JWT")
                 .setSubject(username)

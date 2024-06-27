@@ -35,4 +35,22 @@
             (uid =  #{uid})
         </foreach>
     </delete>
+
+    <update id="updateClickCount">
+        update t_blog
+        set click_count = click_count + 1
+        where uid = #{uid}
+    </update>
+
+    <update id="updateLikeCount">
+        update t_blog
+        set like_count = like_count + 1
+        where uid = #{uid}
+    </update>
+
+    <update id="updateCommentCount">
+        update t_blog
+        set comment_count = comment_count + 1
+        where uid = #{uid}
+    </update>
 </mapper>

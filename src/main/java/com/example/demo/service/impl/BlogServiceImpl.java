@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.demo.dto.LoginUser;
@@ -8,6 +9,7 @@ import com.example.demo.entity.Blog;
 import com.example.demo.entity.BlogSort;
 import com.example.demo.entity.Tag;
 import com.example.demo.entity.User;
+import com.example.demo.global.Result;
 import com.example.demo.mapper.BlogMapper;
 import com.example.demo.pojo.BlogPage;
 import com.example.demo.pojo.Pagination;
@@ -123,6 +125,36 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         blog.setUpdateTime(new Date());
         int flag = blogMapper.insert(blog);
         return flag;
+    }
+
+    @Override
+    public Result updateClickCount(String uid) {
+        int flag = blogMapper.updateClickCount(uid);
+        if (flag > 0){
+            return Result.succ("更新成功");
+        }else {
+            return Result.fail("更新失败");
+        }
+    }
+
+    @Override
+    public Result updateLikeCount(String uid) {
+        int flag = blogMapper.updateLikeCount(uid);
+        if (flag > 0){
+            return Result.succ("更新成功");
+        }else {
+            return Result.fail("更新失败");
+        }
+    }
+
+    @Override
+    public Result updateCommentCount(String uid) {
+        int flag = blogMapper.updateCommentCount(uid);
+        if (flag > 0){
+            return Result.succ("更新成功");
+        }else {
+            return Result.fail("更新失败");
+        }
     }
 
     @Override

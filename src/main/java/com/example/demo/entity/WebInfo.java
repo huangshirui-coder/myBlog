@@ -32,4 +32,9 @@ public class WebInfo extends Model {
      * 网站注意事项
      */
     private String webNotices;
+
+    /**
+     * 网站封面图
+     */
+    private String cover;
 }
