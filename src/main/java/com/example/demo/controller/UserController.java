@@ -25,11 +25,6 @@ public class UserController {
     @ApiOperation(value = "注册用户", notes = "注册用户")
     @PostMapping("/register")
     public Result register(@RequestBody User user){
-        if (userService.register(user) == 0){
-            return Result.fail("注册失败");
-        }else {
-            return Result.succ("注册成功");
-        }
+        return userService.register(user);
     }
-
 }

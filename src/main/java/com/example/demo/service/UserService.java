@@ -9,7 +9,7 @@ import com.example.demo.global.Result;
  */
 public interface UserService extends IService<User> {
 
-    public int register(User user);
+    public Result register(User user);
 
     public User getUserById(Integer id);
 

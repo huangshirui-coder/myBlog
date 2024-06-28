@@ -1,11 +1,13 @@
 package com.example.demo.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Transient;
 
 import java.util.Date;
 
@@ -26,7 +28,7 @@ public class User extends Model {
     /**
      * 主键
      */
-    private Long id;
+    private String id;
     /**
      * 用户名
      */
@@ -66,7 +68,7 @@ public class User extends Model {
     /**
      * 创建人的用户id
      */
-    private Long createBy;
+    private String createBy;
     /**
      * 创建时间
      */
@@ -74,7 +76,7 @@ public class User extends Model {
     /**
      * 更新人
      */
-    private Long updateBy;
+    private String updateBy;
     /**
      * 更新时间
      */
@@ -83,4 +85,8 @@ public class User extends Model {
      * 删除标志（0代表未删除，1代表已删除）
      */
     private Integer delFlag;
+
+    @Transient
+    @TableField(exist = false)
+    private String verCode;
 }

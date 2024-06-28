@@ -6,7 +6,6 @@ import com.example.demo.global.Result;
 import com.example.demo.pojo.BlogPage;
 import com.example.demo.pojo.Pagination;
 import com.example.demo.service.BlogService;
-import com.example.demo.service.impl.BlogServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,7 @@ import java.util.Map;
 @RequestMapping("/blog")
 public class BlogController {
     @Autowired
-    BlogServiceImpl blogService;
+    BlogService blogService;
 
     @ApiOperation(value = "按pagination查询博客的详细信息", notes = "按pagination查询博客的详细信息")
     @PostMapping("selectAll")
