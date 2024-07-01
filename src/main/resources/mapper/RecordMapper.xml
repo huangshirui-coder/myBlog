@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.RecordMapper">
+    <select id="selectByBlogUidAndUserUid" resultType="com.example.demo.entity.Record">
+        select uid, user_uid, blog_uid from t_record where user_uid = #{userUid} and blog_uid = #{blogUid}
+    </select>
+</mapper>

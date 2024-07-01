@@ -5,17 +5,16 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.demo.dto.LoginUser;
-import com.example.demo.entity.Blog;
-import com.example.demo.entity.BlogSort;
-import com.example.demo.entity.Tag;
-import com.example.demo.entity.User;
+import com.example.demo.entity.*;
 import com.example.demo.global.Result;
 import com.example.demo.mapper.BlogMapper;
 import com.example.demo.pojo.BlogPage;
 import com.example.demo.pojo.Pagination;
 import com.example.demo.service.BlogService;
 import com.example.demo.service.BlogSortService;
+import com.example.demo.service.LikeService;
 import com.example.demo.utils.StringUtils;
+import com.example.demo.vo.BlogVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,6 +31,8 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
     TagServiceImpl tagService;
     @Autowired
     BlogSortService blogSortService;
+    @Autowired
+    LikeService likeService;
 
     @Override
     public BlogPage selectAll(Pagination pagination) {
@@ -85,10 +86,8 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
     }
 
     @Override
-    public Blog selectOne(String uid) {
-        LambdaQueryWrapper<Blog> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Blog::getUid, uid);
-        Blog blog = blogMapper.selectOne(wrapper);
+    public BlogVo selectOne(String uid, String userUid) {
+        BlogVo blog = blogMapper.selectOneByUid(uid, userUid);
         BlogSort blogSort = blogSortService.getBlogSortByUid(blog.getBlogSortUid());
         blog.setBlogSort(blogSort);
         return blog;
@@ -138,14 +137,27 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
     }
 
     @Override
-    public Result updateLikeCount(String uid, boolean flag) {
-        int result = blogMapper.updateLikeCount(uid, flag);
+    public Result updateLikeCount(String uid, String userUid, boolean flag) {
+        Like searLike = likeService.getLikeByUserUidAndBlogUid(userUid, uid);
+        int result = 0;
+        if (searLike == null) {
+            result = blogMapper.updateLikeCount(uid, false);
+        }else {
+            result = blogMapper.updateLikeCount(uid, true);
+        }
+        likeService.insertIfNotIn(uid, userUid);
         if (result > 0){
             return Result.succ("更新成功");
         }else {
             return Result.fail("更新失败");
         }
     }
+
+    @Override
+    public Result updateRecordCount(String uid, String userUid, boolean flag) {
+        return null;
+    }
+
 
     @Override
     public Result updateCommentCount(String uid) {

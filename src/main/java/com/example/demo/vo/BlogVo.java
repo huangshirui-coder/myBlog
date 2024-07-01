@@ -1,25 +1,21 @@
-package com.example.demo.entity;
+package com.example.demo.vo;
 
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.example.demo.entity.BlogSort;
+import com.example.demo.entity.Tag;
 import com.example.demo.validator.annotion.IntNotNull;
 import com.example.demo.validator.annotion.StringNotNull;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-@TableName("t_blog")
 @Data
-public class Blog extends Model {
-
-    private static final long serialVersionUID = 1L;
-
-
+public class BlogVo implements Serializable {
     @StringNotNull
     private String uid;
 
@@ -195,17 +191,15 @@ public class Blog extends Model {
     @TableField(exist = false)
     private BlogSort blogSort;
 
-
     /**
-     * 博客标题图
+     * 是否已经点赞
      */
     @TableField(exist = false)
-    private String photoUrl;
-
+    private boolean isLike;
 
     /**
-     * 版权申明
+     * 是否已经收藏
      */
     @TableField(exist = false)
-    private String copyright;
+    private boolean isRecord;
 }

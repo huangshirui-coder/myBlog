@@ -44,10 +44,10 @@
 
     <update id="updateLikeCount">
         update t_blog
-        <if test="flag == false">
+        <if test="flag == true">
             set like_count = like_count - 1
         </if>
-        <if test="flag == true">
+        <if test="flag == false">
             set like_count = like_count + 1
         </if>
         where uid = #{uid}
@@ -58,4 +58,19 @@
         set comment_count = comment_count + 1
         where uid = #{uid}
     </update>
+
+    <select id="selectOneByUid" resultType="com.example.demo.vo.BlogVo">
+        SELECT
+            t_blog.*,
+            IF(t_like.blog_uid IS NOT NULL, TRUE, FALSE) AS is_like,
+            IF(t_record.blog_uid IS NOT NULL, TRUE, FALSE) AS is_record
+        FROM
+            t_blog
+                LEFT JOIN
+            t_like ON t_blog.uid = t_like.blog_uid AND t_like.user_uid = #{userUid}
+                LEFT JOIN
+            t_record ON t_blog.uid = t_record.blog_uid AND t_record.user_uid = #{userUid}
+        WHERE
+            t_blog.uid = #{uid}
+    </select>
 </mapper>

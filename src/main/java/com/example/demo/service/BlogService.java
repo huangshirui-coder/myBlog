@@ -5,6 +5,7 @@ import com.example.demo.entity.Blog;
 import com.example.demo.global.Result;
 import com.example.demo.pojo.BlogPage;
 import com.example.demo.pojo.Pagination;
+import com.example.demo.vo.BlogVo;
 
 import java.util.List;
 import java.util.Map;
@@ -32,7 +33,7 @@ public interface BlogService extends IService<Blog> {
      * @Param []
      * @return com.example.demo.entity.Blog
      **/
-    public Blog selectOne(String uid);
+    public BlogVo selectOne(String uid, String userUid);
 
     /*
      * @Author Huang
@@ -74,7 +75,12 @@ public interface BlogService extends IService<Blog> {
     /*
     点赞数+1
      */
-    public Result updateLikeCount(String uid, boolean flag);
+    public Result updateLikeCount(String uid, String userUid, boolean flag);
+
+    /*
+    收藏数+1
+     */
+    public Result updateRecordCount(String uid, String userUid, boolean flag);
 
     /*
     评论数+1

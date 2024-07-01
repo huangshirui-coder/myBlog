@@ -49,9 +49,9 @@ public class LoginServiceImpl implements LoginService {
         String userId = loginUser.getUser().getId().toString();
         String jwt = JwtUtils.generateToken(userId);
         redisCache.setCacheObject(RedisConf.LOGIN + RedisConf.COLON + userId, loginUser, 1, TimeUnit.DAYS);
-        Map<String, String> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put(VueConf.TOKEN, jwt);
-        map.put("userName", loginUser.getUser().getUserName());
+        map.put("user", loginUser.getUser());
         return new Result().succ(map);
     }
 

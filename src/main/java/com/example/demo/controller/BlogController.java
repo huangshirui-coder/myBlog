@@ -6,6 +6,7 @@ import com.example.demo.global.Result;
 import com.example.demo.pojo.BlogPage;
 import com.example.demo.pojo.Pagination;
 import com.example.demo.service.BlogService;
+import com.example.demo.vo.BlogVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.auth.In;
@@ -61,8 +62,8 @@ public class BlogController {
 
     @ApiOperation(value = "根据uid查询详细的博客记录", notes = "根据uid查询详细的博客记录")
     @GetMapping("selectOneByUid")
-    public Result selectOneByUid(@RequestParam String uid){
-        Blog one = blogService.selectOne(uid);
+    public Result selectOneByUid(@RequestParam String uid, @RequestParam String userUid){
+        BlogVo one = blogService.selectOne(uid, userUid);
         return Result.succ(one);
     }
 
@@ -101,7 +102,7 @@ public class BlogController {
 
     @ApiOperation(value = "点赞功能接口", notes = "点赞功能接口")
     @GetMapping("updateLikeCount")
-    public Result updateLikeCount(@RequestParam String uid, @RequestParam boolean flag){
-        return blogService.updateLikeCount(uid, flag);
+    public Result updateLikeCount(@RequestParam String uid, @RequestParam String userUid, @RequestParam boolean flag){
+        return blogService.updateLikeCount(uid, userUid, flag);
     }
 }

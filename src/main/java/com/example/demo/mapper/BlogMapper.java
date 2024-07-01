@@ -3,6 +3,7 @@ package com.example.demo.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.demo.entity.Blog;
 import com.example.demo.global.Result;
+import com.example.demo.vo.BlogVo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -30,5 +31,10 @@ public interface BlogMapper extends BaseMapper<Blog> {
     评论数+1
      */
     int updateCommentCount(String uid);
+
+    /*
+    根据blog uid单条查询
+     */
+    BlogVo selectOneByUid(String uid, String userUid);
 
 }
