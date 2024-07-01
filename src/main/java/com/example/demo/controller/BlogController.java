@@ -8,6 +8,7 @@ import com.example.demo.pojo.Pagination;
 import com.example.demo.service.BlogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -96,5 +97,11 @@ public class BlogController {
         }else {
             return Result.succ("插入成功");
         }
+    }
+
+    @ApiOperation(value = "点赞功能接口", notes = "点赞功能接口")
+    @GetMapping("updateLikeCount")
+    public Result updateLikeCount(@RequestParam String uid, @RequestParam boolean flag){
+        return blogService.updateLikeCount(uid, flag);
     }
 }

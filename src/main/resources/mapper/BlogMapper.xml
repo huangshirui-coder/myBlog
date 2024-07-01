@@ -44,7 +44,12 @@
 
     <update id="updateLikeCount">
         update t_blog
-        set like_count = like_count + 1
+        <if test="flag == false">
+            set like_count = like_count - 1
+        </if>
+        <if test="flag == true">
+            set like_count = like_count + 1
+        </if>
         where uid = #{uid}
     </update>
 

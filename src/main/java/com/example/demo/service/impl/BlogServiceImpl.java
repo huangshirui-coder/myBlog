@@ -138,9 +138,9 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
     }
 
     @Override
-    public Result updateLikeCount(String uid) {
-        int flag = blogMapper.updateLikeCount(uid);
-        if (flag > 0){
+    public Result updateLikeCount(String uid, boolean flag) {
+        int result = blogMapper.updateLikeCount(uid, flag);
+        if (result > 0){
             return Result.succ("更新成功");
         }else {
             return Result.fail("更新失败");

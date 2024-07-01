@@ -35,11 +35,11 @@ public class BlogSortServiceImpl extends ServiceImpl<BlogSortMapper, BlogSort> i
         String jsonResult = redisUtils.get("blogsort-List");
         if (! StringUtils.isEmpty(jsonResult)){
             ArrayList arrayList = JsonUtils.jsonArrayToArrayList(jsonResult);
-            log.info("从缓存中获取goodsList");
+            log.info("从缓存中获取blogsort-List");
             return arrayList;
         }
         redisUtils.set("blogsort-List", JsonUtils.objectToJson(list).toString());
-        log.info("从数据库中获取goodsList");
+        log.info("从数据库中获取blogsort-List");
         return list;
     }
 

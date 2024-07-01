@@ -49,7 +49,8 @@ spring:
   redis:
     database: 0 # 0也是默认值，表示你要操控的 Redis 上的哪个数据库
     port: 6379  # 6379也是默认值，表示 Redis 端口
-    host: 127.0.0.1     # 这里填写你的服务器地址
+    host: 203.195.195.64     # 这里填写你的服务器地址
+    password: 123456
 
   # 解决swagger3空指针报错
   mvc:
@@ -59,7 +60,7 @@ spring:
   # 数据库配置
   datasource:
     name: demo
-    url: jdbc:mysql://localhost:3306/demo?&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
+    url: jdbc:mysql://203.195.195.64:3306/demo?&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver

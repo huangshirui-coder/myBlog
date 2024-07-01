@@ -74,7 +74,7 @@ public interface BlogService extends IService<Blog> {
     /*
     点赞数+1
      */
-    public Result updateLikeCount(String uid);
+    public Result updateLikeCount(String uid, boolean flag);
 
     /*
     评论数+1
