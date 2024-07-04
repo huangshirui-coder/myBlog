@@ -60,14 +60,11 @@ spring:
   # 数据库配置
   datasource:
     name: demo
-    url: jdbc:mysql://203.195.195.64:3306/demo?&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
+    url: jdbc:mysql://203.195.195.64:3306/demo?&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
-
-    allowPublicKeyRetrieval: true
-
 
     ## 配置连接池信息
     ## 初始化大小，最小，最大

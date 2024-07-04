@@ -5,4 +5,11 @@
     <select id="getAllUsername" resultType="String">
         select user_name from sys_user
     </select>
+
+    <select id="getUserWithRoleByUsername" resultType="com.example.demo.entity.User">
+        select sys_user.*, sys_role.name role from sys_user
+        left join sys_user_role on sys_user.id = sys_user_role.user_id
+        left join sys_role on sys_user_role.role_id = sys_role.id
+        where user_name = #{username}
+    </select>
 </mapper>

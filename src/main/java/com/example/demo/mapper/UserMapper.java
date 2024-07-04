@@ -12,4 +12,6 @@ import java.util.List;
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
     public List<String> getAllUsername();
+
+    User getUserWithRoleByUsername(String username);
 }

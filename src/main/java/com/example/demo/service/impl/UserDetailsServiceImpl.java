@@ -32,9 +32,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(User::getUserName, username);
-        User user = userMapper.selectOne(wrapper);
+        User user = userMapper.getUserWithRoleByUsername(username);
         if (Objects.isNull(user)){
             throw new RuntimeException("用户名或密码错误");
         }

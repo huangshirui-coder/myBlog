@@ -86,7 +86,17 @@ public class User extends Model {
      */
     private Integer delFlag;
 
+    /*
+        验证码
+     */
     @Transient
     @TableField(exist = false)
     private String verCode;
+
+    /*
+    角色
+     */
+    @Transient
+    @TableField(exist = false)
+    private String role;
 }
