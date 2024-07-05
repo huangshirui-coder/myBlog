@@ -1,12 +1,22 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.User;
+import com.example.demo.entity.Visit;
 import com.example.demo.global.Result;
+import com.example.demo.service.LoginService;
+import com.example.demo.service.VisitService;
 import com.example.demo.service.impl.LoginServiceImpl;
+import com.example.demo.utils.IPUtils;
+import com.example.demo.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import javafx.scene.input.DataFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * 登录控制类
@@ -17,7 +27,9 @@ import org.springframework.web.bind.annotation.*;
 public class LoginController {
 
     @Autowired
-    LoginServiceImpl loginService;
+    LoginService loginService;
+    @Autowired
+    VisitService visitService;
     /*
      * @Author Huang
      * @Description 对登陆信息进行验证
@@ -26,8 +38,28 @@ public class LoginController {
      **/
     @PostMapping("/login")
     @ApiOperation(value = "输入用户名和密码登录", notes = "输入用户名和密码登录")
-    public Result login(@RequestBody User user){
-        return loginService.login(user);
+    public Result login(@RequestBody User user, HttpServletRequest request){
+        try {
+            Result result = loginService.login(user);
+            String ip = IPUtils.getClientIP(request);
+            ip = "203.195.195.64";
+            String province = IPUtils.getProvince(IPUtils.getInstance(), ip);
+            Visit visit = new Visit();
+            visit.setIp(ip);
+            visit.setUsername(user.getUserName());
+            visit.setIpAddr(province);
+            Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String dateStr = sdf.format(date);
+            Date date1 = sdf.parse(dateStr);
+            visit.setVisitTime(date1);
+            visit.setUid(StringUtils.getUUID());
+            visitService.insertVisit(visit);
+            return result;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return Result.fail("登录失败");
     }
 
 
