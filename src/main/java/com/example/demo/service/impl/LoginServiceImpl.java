@@ -42,7 +42,7 @@ public class LoginServiceImpl implements LoginService {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUserName(), user.getPassword());
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
         if (Objects.isNull(authentication)){
-            throw new RuntimeException("用户名或密码错误！");
+            return Result.fail("用户名或密码错误！");
         }
         // 生成JwtToken、发往前端 将loginUser保存到Redis、
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
@@ -52,7 +52,7 @@ public class LoginServiceImpl implements LoginService {
         Map<String, Object> map = new HashMap<>();
         map.put(VueConf.TOKEN, jwt);
         map.put("user", loginUser.getUser());
-        return new Result().succ(map);
+        return Result.succ(map);
     }
 
 

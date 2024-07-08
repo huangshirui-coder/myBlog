@@ -41,20 +41,21 @@ public class LoginController {
     public Result login(@RequestBody User user, HttpServletRequest request){
         try {
             Result result = loginService.login(user);
-            String ip = IPUtils.getClientIP(request);
-            ip = "203.195.195.64";
-            String province = IPUtils.getProvince(IPUtils.getInstance(), ip);
-            Visit visit = new Visit();
-            visit.setIp(ip);
-            visit.setUsername(user.getUserName());
-            visit.setIpAddr(province);
-            Date date = new Date();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            String dateStr = sdf.format(date);
-            Date date1 = sdf.parse(dateStr);
-            visit.setVisitTime(date1);
-            visit.setUid(StringUtils.getUUID());
-            visitService.insertVisit(visit);
+            if (result.getCode() == 200){
+                String ip = IPUtils.getClientIP(request);
+                ip = "203.195.195.64";
+                String province = IPUtils.getProvince(IPUtils.getInstance(), ip);
+                Visit visit = new Visit();
+                visit.setIp(ip);
+                visit.setUsername(user.getUserName());
+                visit.setIpAddr(province);
+                Date date = new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String dateStr = sdf.format(date);
+                visit.setVisitTime(dateStr);
+                visit.setUid(StringUtils.getUUID());
+                visitService.insertVisit(visit);
+            }
             return result;
         }catch (Exception e){
             e.printStackTrace();

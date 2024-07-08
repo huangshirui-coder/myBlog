@@ -34,11 +34,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userMapper.getUserWithRoleByUsername(username);
         if (Objects.isNull(user)){
-            throw new RuntimeException("用户名或密码错误");
+            return null;
         }
         List<String> permissionKeyList =
                 menuMapper.selectPermsByUserId(user.getId());
-
 //        List<String> list = new ArrayList<>(Arrays.asList("test"));
         return new LoginUser(user, permissionKeyList);
     }

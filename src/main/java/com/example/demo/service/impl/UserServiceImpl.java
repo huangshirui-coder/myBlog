@@ -1,5 +1,7 @@
 package com.example.demo.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.demo.dto.LoginUser;
 import com.example.demo.entity.User;
@@ -8,10 +10,14 @@ import com.example.demo.mapper.UserMapper;
 import com.example.demo.service.UserService;
 import com.example.demo.utils.RedisCache;
 import com.example.demo.utils.StringUtils;
+import com.example.demo.web.page.PageDomain;
+import com.example.demo.web.page.TableDataInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -74,6 +80,30 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public User getUserById(Integer id) {
         return userMapper.selectById(id);
+    }
+
+    @Override
+    public TableDataInfo pageList(User user, String searchKey, PageDomain pageDomain) {
+        Page page = new Page(pageDomain.getPageNum(), pageDomain.getPageSize());
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(user.getUserType()!= null, User::getUserType, user.getUserType())
+                .eq(user.getStatus()!= null, User::getStatus, user.getStatus())
+                .and(w->w.like(StringUtils.isNotBlank(searchKey), User::getUserName, searchKey)
+                        .or().like(StringUtils.isNotBlank(searchKey), User::getEmail, searchKey)
+                        .or().like(StringUtils.isNotBlank(searchKey), User::getPhonenumber, searchKey));
+        page = userMapper.selectPage(page, wrapper);
+        TableDataInfo tableDataInfo = TableDataInfo.suss(page.getRecords(), page.getTotal(), "查询成功");
+        return tableDataInfo;
+    }
+
+    @Override
+    public Result changeUserType(User user) {
+        LambdaQueryWrapper<User> wrapper= new LambdaQueryWrapper<>();
+        wrapper.eq(User::getId, user.getId());
+        User userResult = userMapper.selectOne(wrapper);
+        userResult.setUserType(user.getUserType());
+        userMapper.update(userResult, wrapper);
+        return null;
     }
 
 
