@@ -44,6 +44,12 @@ public class UserController {
     @GetMapping("changeUserType")
     @ApiOperation(value = "根据id修改用户类型")
     public Result changeUserType(User user){
+        return userService.changeUserType(user);
+    }
+
+    @GetMapping("changeUserStatus")
+    @ApiOperation(value = "根据id修改启用状态")
+    public Result changeUserStatus(User user){
         return null;
     }
 }

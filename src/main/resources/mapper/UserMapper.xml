@@ -12,4 +12,24 @@
         left join sys_role on sys_user_role.role_id = sys_role.id
         where user_name = #{username}
     </select>
+
+    <sql id="all">
+
+    </sql>
+
+    <select id="pageList" resultType="com.example.demo.entity.User">
+        select * from sys_user
+        <where>
+            <if test="user.userType != null">
+                user_type = #{user.userType}
+            </if>
+            <if test="user.status != null">
+                and status = #{user.status}
+            </if>
+            <if test="searchKey != null || searchKey != ''">
+                and (user_name like concat('%',#{searchKey},'%') or email like concat('%',#{searchKey},'%') or phonenumber like concat('%',#{searchKey},'%'))
+            </if>
+        </where>
+
+    </select>
 </mapper>

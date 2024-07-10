@@ -21,4 +21,6 @@ public interface UserService extends IService<User> {
 
     Result changeUserType(User user);
 
+    Result changeUserStatus(User user);
+
 }

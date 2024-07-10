@@ -84,15 +84,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public TableDataInfo pageList(User user, String searchKey, PageDomain pageDomain) {
-        Page page = new Page(pageDomain.getPageNum(), pageDomain.getPageSize());
-        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(user.getUserType()!= null, User::getUserType, user.getUserType())
-                .eq(user.getStatus()!= null, User::getStatus, user.getStatus())
-                .and(w->w.like(StringUtils.isNotBlank(searchKey), User::getUserName, searchKey)
-                        .or().like(StringUtils.isNotBlank(searchKey), User::getEmail, searchKey)
-                        .or().like(StringUtils.isNotBlank(searchKey), User::getPhonenumber, searchKey));
-        page = userMapper.selectPage(page, wrapper);
-        TableDataInfo tableDataInfo = TableDataInfo.suss(page.getRecords(), page.getTotal(), "查询成功");
+//        Page page = new Page(pageDomain.getPageNum(), pageDomain.getPageSize());
+//        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+//        wrapper.eq(user.getUserType()!= null, User::getUserType, user.getUserType())
+//                .eq(user.getStatus()!= null, User::getStatus, user.getStatus())
+//                .and(w->w.like(StringUtils.isNotBlank(searchKey), User::getUserName, searchKey)
+//                        .or().like(StringUtils.isNotBlank(searchKey), User::getEmail, searchKey)
+//                        .or().like(StringUtils.isNotBlank(searchKey), User::getPhonenumber, searchKey));
+//        page = userMapper.selectPage(page, wrapper);
+//        TableDataInfo tableDataInfo = TableDataInfo.suss(page.getRecords(), page.getTotal(), "查询成功");
+        List<User> list = userMapper.pageList(user, searchKey);
+        TableDataInfo tableDataInfo = TableDataInfo.suss(list, list.size(), "查询成功");
         return tableDataInfo;
     }
 
@@ -102,7 +104,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         wrapper.eq(User::getId, user.getId());
         User userResult = userMapper.selectOne(wrapper);
         userResult.setUserType(user.getUserType());
-        userMapper.update(userResult, wrapper);
+        int flag = userMapper.update(userResult, wrapper);
+        if (flag > 0){
+            return Result.succ("更新成功");
+        }else{
+            return Result.fail("更新失败");
+        }
+    }
+
+    @Override
+    public Result changeUserStatus(User user) {
         return null;
     }
 
