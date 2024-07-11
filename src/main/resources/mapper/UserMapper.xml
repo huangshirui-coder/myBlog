@@ -30,6 +30,6 @@
                 and (user_name like concat('%',#{searchKey},'%') or email like concat('%',#{searchKey},'%') or phonenumber like concat('%',#{searchKey},'%'))
             </if>
         </where>
-
+        limit #{pageDomain.pageSize} offset #{pageDomain.offset}
     </select>
 </mapper>

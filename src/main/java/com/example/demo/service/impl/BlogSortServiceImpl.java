@@ -43,6 +43,8 @@ public class BlogSortServiceImpl extends ServiceImpl<BlogSortMapper, BlogSort> i
         return list;
     }
 
+
+
     @Override
     public int insert(BlogSort blogSort) {
         blogSort.setUid(StringUtils.getUUID());

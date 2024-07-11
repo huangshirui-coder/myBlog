@@ -44,7 +44,7 @@ public class User extends Model {
      */
     private String password;
     /**
-     * 账号状态（0正常 1停用）
+     * 账号状态（0停用 1正常）
      */
     private Integer status;
     /**

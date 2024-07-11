@@ -50,6 +50,6 @@ public class UserController {
     @GetMapping("changeUserStatus")
     @ApiOperation(value = "根据id修改启用状态")
     public Result changeUserStatus(User user){
-        return null;
+        return userService.changeUserStatus(user);
     }
 }

@@ -93,7 +93,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 //                        .or().like(StringUtils.isNotBlank(searchKey), User::getPhonenumber, searchKey));
 //        page = userMapper.selectPage(page, wrapper);
 //        TableDataInfo tableDataInfo = TableDataInfo.suss(page.getRecords(), page.getTotal(), "查询成功");
-        List<User> list = userMapper.pageList(user, searchKey);
+        List<User> list = userMapper.pageList(user, searchKey, pageDomain);
         TableDataInfo tableDataInfo = TableDataInfo.suss(list, list.size(), "查询成功");
         return tableDataInfo;
     }
@@ -114,7 +114,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public Result changeUserStatus(User user) {
-        return null;
+        LambdaQueryWrapper<User> wrapper= new LambdaQueryWrapper<>();
+        wrapper.eq(User::getId, user.getId());
+        User userResult = userMapper.selectOne(wrapper);
+        userResult.setStatus(user.getStatus());
+        int flag = userMapper.update(userResult, wrapper);
+        if (flag > 0){
+            return Result.succ("更新成功");
+        }else{
+            return Result.fail("更新失败");
+        }
     }
 
 

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.VisitMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.demo.entity.Visit">
+            <id property="uid" column="uid" jdbcType="VARCHAR"/>
+            <result property="username" column="user_id" jdbcType="VARCHAR"/>
+            <result property="ip" column="ip" jdbcType="VARCHAR"/>
+            <result property="ipAddr" column="ip_addr" jdbcType="VARCHAR"/>
+            <result property="visitTime" column="visit_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        uid,username,ip,ip_addr,visit_time
+    </sql>
+
+    <select id="selectProvTen" resultType="java.util.Map">
+        select ip_addr ipAddr, count(DISTINCT username, visit_time) num from sys_visit GROUP BY ip_addr ORDER BY num DESC limit 10
+    </select>
+
+</mapper>

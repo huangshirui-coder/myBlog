@@ -44,7 +44,7 @@ public class LoginController {
             if (result.getCode() == 200){
                 String ip = IPUtils.getClientIP(request);
                 ip = "203.195.195.64";
-                String province = IPUtils.getProvince(IPUtils.getInstance(), ip);
+                String province = IPUtils.getProvince(IPUtils.getInstance(), ip) == null ? IPUtils.getCountry(IPUtils.getInstance(), ip) : IPUtils.getProvince(IPUtils.getInstance(), ip);
                 Visit visit = new Visit();
                 visit.setIp(ip);
                 visit.setUsername(user.getUserName());
