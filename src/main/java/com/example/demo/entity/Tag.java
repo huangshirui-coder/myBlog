@@ -47,4 +47,14 @@ public class Tag extends Model {
      * 排序字段，数值越大，越靠前
      */
     private int sort;
+
+    /**
+     * 所属分类
+     */
+    private String blogSortUid;
+
+    /**
+     *
+     */
+    private Integer status;
 }

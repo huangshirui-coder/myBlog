@@ -63,6 +63,10 @@ public class LoginController {
         return Result.fail("登录失败");
     }
 
+    @GetMapping("test")
+    public Result test(){
+        return Result.succ("test");
+    }
 
     @GetMapping("/logout")
     @ApiOperation(value = "退出登录", notes = "退出登录")

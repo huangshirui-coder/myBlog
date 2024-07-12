@@ -105,4 +105,5 @@ public class User extends Model {
     @Transient
     @TableField(exist = false)
     private String role;
+
 }

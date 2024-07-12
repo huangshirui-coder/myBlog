@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.demo.entity.BlogSort;
+import com.example.demo.web.page.PageDomain;
 import com.example.demo.web.page.TableDataInfo;
 
 import java.util.List;
@@ -33,5 +34,7 @@ public interface BlogSortService extends IService<BlogSort> {
     根据uid查询BlogSort信息
      */
     BlogSort getBlogSortByUid(String uid);
+
+    TableDataInfo pageList(BlogSort blogSort, PageDomain pageDomain);
 }
 

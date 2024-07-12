@@ -63,6 +63,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 user.setCreateTime(new Date());
                 user.setUpdateTime(new Date());
                 user.setCreateBy(createById);
+                user.setStatus(1);
                 String verCode = redisCache.getCacheObject(user.getEmail());
                 if (StringUtils.isNotBlank(verCode) && verCode.equals(user.getVerCode())){
                     flag = userMapper.insert(user);
