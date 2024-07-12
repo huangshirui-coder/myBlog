@@ -8,6 +8,7 @@ import com.example.demo.entity.Blog;
 import com.example.demo.entity.BlogSort;
 import com.example.demo.entity.Tag;
 import com.example.demo.global.RedisConf;
+import com.example.demo.global.Result;
 import com.example.demo.mapper.BlogSortMapper;
 import com.example.demo.service.BlogSortService;
 import com.example.demo.service.TagService;
@@ -101,6 +102,17 @@ public class BlogSortServiceImpl extends ServiceImpl<BlogSortMapper, BlogSort> i
         page = blogSortMapper.selectPage(page, wrapper);
         TableDataInfo tableDataInfo = TableDataInfo.suss(page.getRecords(),page.getTotal(),"操作成功");
         return tableDataInfo;
+    }
+
+    @Override
+    public Result updateStatus(BlogSort blogSort) {
+        int flag = blogSortMapper.updateStatus(blogSort);
+        if (flag > 0){
+            redisClear();
+            return Result.succ("成功");
+        }else {
+            return Result.fail("失败");
+        }
     }
 
 

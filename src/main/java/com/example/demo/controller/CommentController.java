@@ -6,6 +6,8 @@ import com.example.demo.global.Result;
 import com.example.demo.service.CommentService;
 import com.example.demo.utils.IPUtils;
 import com.example.demo.utils.StringUtils;
+import com.example.demo.web.page.TableDataInfo;
+import com.example.demo.web.page.TableSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.ContentHandlerFactory;
 import java.util.Date;
 
@@ -57,5 +60,10 @@ public class CommentController {
     @ApiOperation(notes = "删除单条评论记录", value = "删除单条评论记录")
     public Result deleteCommentByUid(@RequestParam String uid) {
         return commentService.deleteByUid(uid);
+    }
+
+    @GetMapping("getListWithSearchParam")
+    public TableDataInfo getListWithSearchParam(Comment comment, HttpServletRequest request){
+        return commentService.getListWithSearchParam(comment, TableSupport.getPageDomain(request));
     }
 }

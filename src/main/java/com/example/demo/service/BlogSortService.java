@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.demo.entity.Blog;
 import com.example.demo.entity.BlogSort;
+import com.example.demo.global.Result;
 import com.example.demo.web.page.PageDomain;
 import com.example.demo.web.page.TableDataInfo;
 
@@ -36,5 +38,7 @@ public interface BlogSortService extends IService<BlogSort> {
     BlogSort getBlogSortByUid(String uid);
 
     TableDataInfo pageList(BlogSort blogSort, PageDomain pageDomain);
+
+    Result updateStatus(BlogSort blogSort);
 }
 

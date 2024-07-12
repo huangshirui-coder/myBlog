@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.demo.dto.CommentDto;
 import com.example.demo.entity.Comment;
@@ -10,6 +11,8 @@ import com.example.demo.service.BlogService;
 import com.example.demo.service.CommentService;
 import com.example.demo.utils.StringUtils;
 import com.example.demo.vo.CommentVo;
+import com.example.demo.web.page.PageDomain;
+import com.example.demo.web.page.TableDataInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -103,5 +106,15 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         LambdaQueryWrapper<Comment> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Comment::getBlogUid, blogUid);
         return Result.succ(commentMapper.selectCount(wrapper));
+    }
+
+    @Override
+    public TableDataInfo getListWithSearchParam(Comment comment, PageDomain pageDomain) {
+        Page page = new Page(pageDomain.getPageNum(), pageDomain.getPageSize());
+        LambdaQueryWrapper<Comment> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(StringUtils.isNotBlank(comment.getBlogUid()), Comment::getBlogUid, comment.getBlogUid())
+                .eq(StringUtils.isNotBlank(comment.getAuthor()), Comment::getAuthor, comment.getAuthor());
+        page = commentMapper.selectPage(page, wrapper);
+        return TableDataInfo.suss(page.getRecords(), page.getTotal(), "操作成功");
     }
 }

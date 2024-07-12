@@ -29,4 +29,10 @@ public class TagController {
     public Result update(@RequestBody Tag tag){
         return tagService.update(tag);
     }
+
+    @ApiOperation(value = "更新启用状态")
+    @PostMapping("updateStatus")
+    public Result updateStatus(@RequestBody Tag tag){
+        return tagService.updateStatus(tag);
+    }
 }

@@ -71,6 +71,17 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
         }
     }
 
+    @Override
+    public Result updateStatus(Tag tag) {
+        int flag = tagMapper.updateStatus(tag);
+        if (flag > 0){
+            redisClear();
+            return Result.succ("成功");
+        }else {
+            return Result.fail("失败");
+        }
+    }
+
     private void redisClear(){
         redisUtils.delete("blogsort-List");
     }

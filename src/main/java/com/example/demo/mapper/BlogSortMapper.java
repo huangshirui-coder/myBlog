@@ -7,4 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface BlogSortMapper extends BaseMapper<BlogSort> {
     BlogSort selectByUid(String uid);
+
+    int updateStatus(BlogSort blogSort);
 }

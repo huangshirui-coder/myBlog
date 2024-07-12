@@ -10,4 +10,8 @@
         WHERE
         uid = #{uid}
     </select>
+
+    <update id="updateStatus" parameterType="com.example.demo.entity.BlogSort">
+        update t_blog_sort set status = #{status} where uid = #{uid}
+    </update>
 </mapper>

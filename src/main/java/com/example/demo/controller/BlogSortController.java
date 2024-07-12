@@ -31,7 +31,7 @@ public class BlogSortController {
 
     @PostMapping("insert")
     @ApiOperation(value = "插入一条BlogSort记录", notes = "插入一条BlogSort记录")
-    public Result insert(BlogSort blogSort){
+    public Result insert(@RequestBody BlogSort blogSort){
         if (blogSortService.insert(blogSort)==1){
             return Result.succ("插入成功");
         }else {
@@ -53,5 +53,11 @@ public class BlogSortController {
     @GetMapping("pageList")
     public TableDataInfo pageList(BlogSort blogSort, HttpServletRequest request){
         return blogSortService.pageList(blogSort, TableSupport.getPageDomain(request));
+    }
+
+    @ApiOperation(value = "更新启用状态")
+    @PostMapping("updateStatus")
+    public Result updateStatus(@RequestBody BlogSort blogSort){
+        return blogSortService.updateStatus(blogSort);
     }
 }
