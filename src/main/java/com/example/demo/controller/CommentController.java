@@ -56,7 +56,7 @@ public class CommentController {
         return commentService.updateState(commentDto);
     }
 
-    @DeleteMapping("delete")
+    @GetMapping("delete")
     @ApiOperation(notes = "删除单条评论记录", value = "删除单条评论记录")
     public Result deleteCommentByUid(@RequestParam String uid) {
         return commentService.deleteByUid(uid);

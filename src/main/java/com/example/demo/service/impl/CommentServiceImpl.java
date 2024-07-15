@@ -93,7 +93,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
     @Override
     public Result deleteByUid(String uid) {
-        int flag = commentMapper.deleteById(uid);
+        int flag = commentMapper.delete(new LambdaQueryWrapper<Comment>().eq(Comment::getUid, uid));
         if (flag > 0) {
             return Result.succ("删除成功");
         }else {
@@ -113,7 +113,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         Page page = new Page(pageDomain.getPageNum(), pageDomain.getPageSize());
         LambdaQueryWrapper<Comment> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(StringUtils.isNotBlank(comment.getBlogUid()), Comment::getBlogUid, comment.getBlogUid())
-                .eq(StringUtils.isNotBlank(comment.getAuthor()), Comment::getAuthor, comment.getAuthor());
+                .like(StringUtils.isNotBlank(comment.getAuthor()), Comment::getAuthor, comment.getAuthor());
         page = commentMapper.selectPage(page, wrapper);
         return TableDataInfo.suss(page.getRecords(), page.getTotal(), "操作成功");
     }

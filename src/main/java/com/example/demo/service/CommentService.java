@@ -20,4 +20,5 @@ public interface CommentService extends IService<Comment> {
     Result getCount(String blogUid);
 
     TableDataInfo getListWithSearchParam(Comment comment, PageDomain pageDomain);
+
 }
