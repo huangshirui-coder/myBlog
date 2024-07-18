@@ -61,15 +61,20 @@
 
     <select id="selectOneByUid" resultType="com.example.demo.vo.BlogVo">
         SELECT
-            t_blog.*,
-            IF(t_like.blog_uid IS NOT NULL, TRUE, FALSE) AS is_like,
-            IF(t_record.blog_uid IS NOT NULL, TRUE, FALSE) AS is_record
+            t_blog.*
+            <if test="userUid != null and userUid != ''">
+                ,
+                IF(t_like.blog_uid IS NOT NULL, TRUE, FALSE) AS is_like,
+                IF(t_record.blog_uid IS NOT NULL, TRUE, FALSE) AS is_record
+            </if>
         FROM
             t_blog
+            <if test="userUid != null and userUid != ''">
                 LEFT JOIN
-            t_like ON t_blog.uid = t_like.blog_uid AND t_like.user_uid = #{userUid}
+                t_like ON t_blog.uid = t_like.blog_uid AND t_like.user_uid = #{userUid}
                 LEFT JOIN
-            t_record ON t_blog.uid = t_record.blog_uid AND t_record.user_uid = #{userUid}
+                t_record ON t_blog.uid = t_record.blog_uid AND t_record.user_uid = #{userUid}
+            </if>
         WHERE
             t_blog.uid = #{uid}
     </select>

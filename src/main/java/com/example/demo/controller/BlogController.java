@@ -62,7 +62,7 @@ public class BlogController {
 
     @ApiOperation(value = "根据uid查询详细的博客记录", notes = "根据uid查询详细的博客记录")
     @GetMapping("selectOneByUid")
-    public Result selectOneByUid(@RequestParam String uid, @RequestParam String userUid){
+    public Result selectOneByUid(@RequestParam String uid, String userUid){
         BlogVo one = blogService.selectOne(uid, userUid);
         return Result.succ(one);
     }
