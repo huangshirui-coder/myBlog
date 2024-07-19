@@ -15,6 +15,8 @@ import com.example.demo.service.BlogSortService;
 import com.example.demo.service.LikeService;
 import com.example.demo.utils.StringUtils;
 import com.example.demo.vo.BlogVo;
+import com.example.demo.web.page.PageDomain;
+import com.example.demo.web.page.TableDataInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.stream.Collector;
 
 @Service
 public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements BlogService {
@@ -50,6 +53,34 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
             blogPage.setTotal(pagination.getTotal());
         }
         return blogPage;
+    }
+
+    @Override
+    public TableDataInfo selectAllNew(Blog blog, PageDomain pageDomain) {
+        Page<Blog> page = new Page<>(pageDomain.getPageNum(), pageDomain.getPageSize());
+        LambdaQueryWrapper<Blog> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(StringUtils.isNotBlank(blog.getBlogSortUid()), Blog::getBlogSortUid, blog.getBlogSortUid())
+                .eq(StringUtils.isNotBlank(blog.getTagUid()), Blog::getTagUid, blog.getTagUid())
+                .like(StringUtils.isNotBlank(blog.getTitle()), Blog::getTitle, blog.getTitle());
+        page = blogMapper.selectPage(page, wrapper);
+        List<Blog> blogList = page.getRecords();
+        for (Blog blog1 : blogList){
+            if (StringUtils.isNotBlank(blog1.getBlogSortUid())){
+                BlogSort blogSort = blogSortService.getBlogSortByUid(blog1.getBlogSortUid());
+                blog1.setBlogSort(blogSort);
+            }
+            if (StringUtils.isNotBlank(blog1.getTagUid())){
+                ArrayList<String> tagUidList = new ArrayList<>();
+                Collections.addAll(tagUidList, blog1.getTagUid().split(","));
+                List<Tag> tagList = new ArrayList<>();
+                for (String tagUid : tagUidList){
+                    Tag tag = tagService.getByuid(tagUid);
+                    tagList.add(tag);
+                }
+                blog1.setTagList(tagList);
+            }
+        }
+        return TableDataInfo.suss(blogList, page.getTotal(), "查询成功");
     }
 
     @Override

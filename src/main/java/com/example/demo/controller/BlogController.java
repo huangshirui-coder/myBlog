@@ -7,12 +7,16 @@ import com.example.demo.pojo.BlogPage;
 import com.example.demo.pojo.Pagination;
 import com.example.demo.service.BlogService;
 import com.example.demo.vo.BlogVo;
+import com.example.demo.web.page.PageDomain;
+import com.example.demo.web.page.TableDataInfo;
+import com.example.demo.web.page.TableSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +33,12 @@ public class BlogController {
     public Result selectAllInstra(@RequestBody Pagination pagination){
         BlogPage blogPage = blogService.selectAll(pagination);
         return Result.succ(blogPage);
+    }
+
+    @ApiOperation(value = "分页查询博客详细信息")
+    @GetMapping("getAll")
+    public TableDataInfo selectAllInstraNew(Blog blog, HttpServletRequest request){
+        return blogService.selectAllNew(blog, TableSupport.getPageDomain(request));
     }
 
     @ApiOperation(value = "按照pagination的一页大小搜索热门博客", notes = "按照pagination的一页大小搜索热门博客")

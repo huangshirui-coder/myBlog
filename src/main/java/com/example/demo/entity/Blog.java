@@ -25,12 +25,6 @@ public class Blog extends Model {
 
 
     /**
-     * 唯一oid【自动递增】
-     */
-    @IntNotNull
-    private Integer oid;
-
-    /**
      * 博客标题
      */
     private String title;
@@ -119,11 +113,6 @@ public class Blog extends Model {
      * 如果原创，作者为管理员名
      */
     private String author;
-
-    /**
-     * 文章出处
-     */
-    private String articlesPart;
 
     /**
      * 推荐级别，用于首页推荐

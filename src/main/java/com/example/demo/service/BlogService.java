@@ -6,6 +6,8 @@ import com.example.demo.global.Result;
 import com.example.demo.pojo.BlogPage;
 import com.example.demo.pojo.Pagination;
 import com.example.demo.vo.BlogVo;
+import com.example.demo.web.page.PageDomain;
+import com.example.demo.web.page.TableDataInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -18,6 +20,14 @@ public interface BlogService extends IService<Blog> {
      * @return java.util.List<com.example.demo.entity.Blog>
      **/
     public BlogPage selectAll(Pagination pagination);
+
+    /**
+     * 分页查询（新）
+     * @param blog
+     * @param pageDomain
+     * @return
+     */
+    TableDataInfo selectAllNew(Blog blog, PageDomain pageDomain);
 
     /*
      * @Author Huang
