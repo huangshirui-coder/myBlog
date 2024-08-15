@@ -110,9 +110,37 @@ public class BlogController {
         }
     }
 
+    @ApiOperation(value = "更新一条博客记录")
+    @PostMapping("updateOne")
+    public Result updateOne(@RequestBody Blog blog){
+        return blogService.updateOne(blog);
+    }
+
     @ApiOperation(value = "点赞功能接口", notes = "点赞功能接口")
     @GetMapping("updateLikeCount")
     public Result updateLikeCount(@RequestParam String uid, @RequestParam String userUid, @RequestParam boolean flag){
         return blogService.updateLikeCount(uid, userUid, flag);
+    }
+
+    @ApiOperation(value = "修改可见状态")
+    @GetMapping("changeStatus")
+    public Result changeStatus(String uid, int status){
+        Blog blog = new Blog();
+        blog.setUid(uid);
+        blog.setStatus(status);
+        return blogService.changeStatus(blog);
+    }
+    @ApiOperation(value = "修改评论开启状态")
+    @GetMapping("changeOpenComment")
+    public Result changeOpenComment(String uid, int openComment){
+        Blog blog = new Blog();
+        blog.setUid(uid);
+        blog.setOpenComment(openComment);
+        int flag = blogService.changeOpenComment(blog);
+        if (flag > 0 ){
+            return Result.succ("操作成功");
+        }else {
+            return Result.fail("操作失败");
+        }
     }
 }

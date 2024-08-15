@@ -1,8 +1,6 @@
 package com.example.demo.entity;
 
-import com.baomidou.mybatisplus.annotation.FieldStrategy;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.example.demo.validator.annotion.IntNotNull;
 import com.example.demo.validator.annotion.StringNotNull;
@@ -19,7 +17,7 @@ public class Blog extends Model {
 
     private static final long serialVersionUID = 1L;
 
-
+    @TableId(type = IdType.AUTO)
     @StringNotNull
     private String uid;
 

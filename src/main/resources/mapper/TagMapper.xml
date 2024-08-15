@@ -5,4 +5,13 @@
     <update id="updateStatus">
         update t_tag set status = #{status} where uid = #{uid}
     </update>
+
+    <select id="selectBatchUids" resultType="com.example.demo.entity.Tag">
+        select uid,content,status,click_count
+        from t_tag
+        where uid in
+        <foreach collection="uids" open="(" close=")" item="uid" separator=",">
+            #{uid}
+        </foreach>
+    </select>
 </mapper>

@@ -11,6 +11,8 @@ public interface TagService extends IService<Tag> {
 
     List<Tag> getByBlogSortUid(String blogSortUid);
 
+    List<Tag> getByTagList(List<String> tagList);
+
     Result insert(Tag tag);
 
     Result update(Tag tag);

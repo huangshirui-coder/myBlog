@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -13,6 +14,7 @@ import com.example.demo.pojo.Pagination;
 import com.example.demo.service.BlogService;
 import com.example.demo.service.BlogSortService;
 import com.example.demo.service.LikeService;
+import com.example.demo.service.TagService;
 import com.example.demo.utils.StringUtils;
 import com.example.demo.vo.BlogVo;
 import com.example.demo.web.page.PageDomain;
@@ -31,7 +33,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
     @Autowired
     BlogMapper blogMapper;
     @Autowired
-    TagServiceImpl tagService;
+    TagService tagService;
     @Autowired
     BlogSortService blogSortService;
     @Autowired
@@ -46,6 +48,9 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         LambdaQueryWrapper<Blog> wrapper = new LambdaQueryWrapper<>();
         page = blogMapper.selectPage(page, wrapper);
         List<Blog> list = page.getRecords();
+        for (Blog item : list){
+            handleBlog(item);
+        }
         blogPage.setBlogList(list);
         if (pagination.getTotal() == 0){
             blogPage.setTotal(blogMapper.selectCount(wrapper));
@@ -65,20 +70,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         page = blogMapper.selectPage(page, wrapper);
         List<Blog> blogList = page.getRecords();
         for (Blog blog1 : blogList){
-            if (StringUtils.isNotBlank(blog1.getBlogSortUid())){
-                BlogSort blogSort = blogSortService.getBlogSortByUid(blog1.getBlogSortUid());
-                blog1.setBlogSort(blogSort);
-            }
-            if (StringUtils.isNotBlank(blog1.getTagUid())){
-                ArrayList<String> tagUidList = new ArrayList<>();
-                Collections.addAll(tagUidList, blog1.getTagUid().split(","));
-                List<Tag> tagList = new ArrayList<>();
-                for (String tagUid : tagUidList){
-                    Tag tag = tagService.getByuid(tagUid);
-                    tagList.add(tag);
-                }
-                blog1.setTagList(tagList);
-            }
+            handleBlog(blog1);
         }
         return TableDataInfo.suss(blogList, page.getTotal(), "查询成功");
     }
@@ -92,15 +84,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         List<Blog> tmp = new ArrayList<>();
         while (it.hasNext()){
             Blog blog = (Blog) it.next();
-            String tagsUid = blog.getTagUid();
-            String[] tagsUidArray = tagsUid.split(",");
-            List<Tag> tagList = new ArrayList();
-            for (int i = 0; i < tagsUidArray.length; i++){
-                Tag tag = tagService.getByuid(tagsUidArray[i]);
-                tagList.add(tag);
-            }
-            blog.setTagList(tagList);
-            blog.setBlogSort(blogSortService.getBlogSortByUid(blog.getBlogSortUid()));
+            handleBlog(blog);
             if (!blog.getBlogSortUid().equals(sid) ){
                 if (sid != null){
                     map.put(sid,new ArrayList(tmp));
@@ -119,8 +103,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
     @Override
     public BlogVo selectOne(String uid, String userUid) {
         BlogVo blog = blogMapper.selectOneByUid(uid, userUid);
-        BlogSort blogSort = blogSortService.getBlogSortByUid(blog.getBlogSortUid());
-        blog.setBlogSort(blogSort);
+        handleBlogVo(blog);
         return blog;
     }
 
@@ -155,6 +138,16 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         blog.setUpdateTime(new Date());
         int flag = blogMapper.insert(blog);
         return flag;
+    }
+
+    @Override
+    public Result updateOne(Blog blog) {
+        int flag = blogMapper.update(blog,new UpdateWrapper<>());
+        if (flag > 0){
+            return Result.succ("更新成功");
+        }else {
+            return Result.fail("更新失败");
+        }
     }
 
     @Override
@@ -245,5 +238,40 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
             blogPage.setTotal(pagination.getTotal());
         }
         return blogPage;
+    }
+
+    @Override
+    public Result changeStatus(Blog blog) {
+        UpdateWrapper<Blog> wrapper = new UpdateWrapper<>();
+        wrapper.eq("uid", blog.getUid());
+        blogMapper.update(blog, wrapper);
+        return Result.succ("操作成功");
+    }
+
+    @Override
+    public int changeOpenComment(Blog blog) {
+        UpdateWrapper<Blog> wrapper = new UpdateWrapper<>();
+        wrapper.eq("uid", blog.getUid());
+        return blogMapper.update(blog, wrapper);
+    }
+
+    void handleBlogVo(BlogVo blog){
+        BlogSort blogSort = blogSortService.getBlogSortByUid(blog.getBlogSortUid());
+        blog.setBlogSort(blogSort);
+        String[] tags = blog.getTagUid().split(",");
+        ArrayList<String> tagUidList = new ArrayList<>(tags.length);
+        Collections.addAll(tagUidList, tags);
+        List<Tag> tagList = tagService.getByTagList(tagUidList);
+        blog.setTagList(tagList);
+    }
+
+    void handleBlog(Blog blog){
+        BlogSort blogSort = blogSortService.getBlogSortByUid(blog.getBlogSortUid());
+        blog.setBlogSort(blogSort);
+        String[] tags = blog.getTagUid().split(",");
+        ArrayList<String> tagUidList = new ArrayList<>(tags.length);
+        Collections.addAll(tagUidList, tags);
+        List<Tag> tagList = tagService.getByTagList(tagUidList);
+        blog.setTagList(tagList);
     }
 }

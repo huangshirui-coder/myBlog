@@ -16,7 +16,7 @@ public class WebInfo extends Model {
      * 主键id
      */
     @TableId
-    private int id;
+    private Integer id;
 
     /**
      * 网站名称
@@ -37,4 +37,19 @@ public class WebInfo extends Model {
      * 网站封面图
      */
     private String cover;
+
+    /**
+     * 网站标题
+     */
+    private String webTitle;
+
+    /**
+     * 网站头像
+     */
+    private String webHead;
+
+    /**
+     * 网站页脚
+     */
+    private String webFootor;
 }

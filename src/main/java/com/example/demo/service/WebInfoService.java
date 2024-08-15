@@ -5,4 +5,8 @@ import com.example.demo.entity.WebInfo;
 
 public interface WebInfoService extends IService<WebInfo> {
     public WebInfo getInfo();
+
+    int insert(WebInfo webInfo);
+
+    int update(WebInfo webInfo);
 }

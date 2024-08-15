@@ -21,4 +21,16 @@ public class WebInfoServiceImpl extends ServiceImpl<WebInfoMapper, WebInfo> impl
         LambdaQueryWrapper<WebInfo> wrapper = new LambdaQueryWrapper();
         return webInfoMapper.selectOne(wrapper);
     }
+
+    @Override
+    public int insert(WebInfo webInfo) {
+        return webInfoMapper.insert(webInfo);
+    }
+
+    @Override
+    public int update(WebInfo webInfo) {
+        LambdaQueryWrapper<WebInfo> wrapper = new LambdaQueryWrapper();
+        wrapper.eq(WebInfo::getId, webInfo.getId());
+        return webInfoMapper.update(webInfo, wrapper);
+    }
 }

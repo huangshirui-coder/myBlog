@@ -1,9 +1,7 @@
 package com.example.demo.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.baomidou.mybatisplus.annotation.FieldStrategy;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -23,6 +21,7 @@ public class BlogSort extends Model {
     /**
      * uid
      */
+    @TableId(type = IdType.AUTO)
     private String uid;
 
     /**

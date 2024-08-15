@@ -1,6 +1,8 @@
 package com.example.demo.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -17,6 +19,7 @@ public class Comment extends Model {
     /*
      主键ID
      */
+    @TableId(type = IdType.AUTO)
     private String uid;
 
     /*

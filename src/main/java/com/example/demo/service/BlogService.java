@@ -77,6 +77,8 @@ public interface BlogService extends IService<Blog> {
      **/
     public int insertOne(Blog blog);
 
+    Result updateOne(Blog blog);
+
     /*
     点击数+1
      */
@@ -103,4 +105,8 @@ public interface BlogService extends IService<Blog> {
     public BlogPage getHotBlog(Pagination pagination);
 
     BlogPage getBlogByBSUid(String bsUid, Pagination pagination);
+
+    Result changeStatus(Blog blog);
+
+    int changeOpenComment(Blog blog);
 }

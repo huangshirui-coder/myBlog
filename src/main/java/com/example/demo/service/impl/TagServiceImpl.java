@@ -38,6 +38,11 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
     }
 
     @Override
+    public List<Tag> getByTagList(List<String> tagList) {
+        return tagMapper.selectBatchUids(tagList);
+    }
+
+    @Override
     public Result insert(Tag tag) {
         tag.setUid(StringUtils.getUUID());
         tag.setCreateTime(new Date());

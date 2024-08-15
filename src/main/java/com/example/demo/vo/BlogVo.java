@@ -2,6 +2,7 @@ package com.example.demo.vo;
 
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.example.demo.entity.BlogSort;
 import com.example.demo.entity.Tag;
 import com.example.demo.validator.annotion.IntNotNull;
@@ -15,7 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public class BlogVo implements Serializable {
+public class BlogVo extends Model {
     @StringNotNull
     private String uid;
 
