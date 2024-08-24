@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.demo.entity.WebInfo;
 import com.example.demo.mapper.WebInfoMapper;
 import com.example.demo.service.WebInfoService;
+import com.example.demo.utils.PictureUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,12 @@ public class WebInfoServiceImpl extends ServiceImpl<WebInfoMapper, WebInfo> impl
     @Override
     public WebInfo getInfo() {
         LambdaQueryWrapper<WebInfo> wrapper = new LambdaQueryWrapper();
-        return webInfoMapper.selectOne(wrapper);
+        WebInfo webInfo = webInfoMapper.selectOne(wrapper);
+        webInfo.setCover(PictureUtil.addPrefix(webInfo.getCover()));
+        webInfo.setWebHead(PictureUtil.addPrefix(webInfo.getWebHead()));
+        webInfo.setLoginCover(PictureUtil.addPrefix(webInfo.getLoginCover()));
+        webInfo.setAdminLoginCover(PictureUtil.addPrefix(webInfo.getAdminLoginCover()));
+        return webInfo;
     }
 
     @Override

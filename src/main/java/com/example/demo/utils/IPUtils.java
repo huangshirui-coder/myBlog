@@ -2,9 +2,12 @@ package com.example.demo.utils;
 
 import com.maxmind.geoip2.DatabaseReader;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.ClassPathResource;
 
+import org.apache.commons.io.FileUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -50,7 +53,13 @@ public class IPUtils {
                 synchronized (DatabaseReader.class) {
                     if (null == databaseReader) {
                         log.info("实例化IpDatabaseReader");
-                        databaseReader = new DatabaseReader.Builder(new File(LOCAL_TEST_IP_DATABASE)).build();
+
+                        ClassPathResource resource = new ClassPathResource("GeoLite2-City.mmdb");
+                        InputStream inputStream = resource.getInputStream();
+                        File tempFile = File.createTempFile("temp", ".mmdb");
+                        FileUtils.copyInputStreamToFile(inputStream, tempFile);
+
+                        databaseReader = new DatabaseReader.Builder(tempFile).build();
                     }
                 }
             }

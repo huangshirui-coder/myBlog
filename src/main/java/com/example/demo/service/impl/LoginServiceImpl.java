@@ -51,6 +51,7 @@ public class LoginServiceImpl implements LoginService {
         redisCache.setCacheObject(RedisConf.LOGIN + RedisConf.COLON + userId, loginUser, 1, TimeUnit.DAYS);
         Map<String, Object> map = new HashMap<>();
         map.put(VueConf.TOKEN, jwt);
+        loginUser.getUser().setAvatar(PictureUtil.addPrefix(loginUser.getUser().getAvatar()));
         map.put("user", loginUser.getUser());
         return Result.succ(map);
     }
