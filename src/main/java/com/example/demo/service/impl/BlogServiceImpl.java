@@ -12,6 +12,7 @@ import com.example.demo.mapper.BlogMapper;
 import com.example.demo.pojo.BlogPage;
 import com.example.demo.pojo.Pagination;
 import com.example.demo.service.*;
+import com.example.demo.utils.PictureUtil;
 import com.example.demo.utils.StringUtils;
 import com.example.demo.vo.BlogVo;
 import com.example.demo.web.page.PageDomain;
@@ -49,6 +50,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         page = blogMapper.selectPage(page, wrapper);
         List<Blog> list = page.getRecords();
         for (Blog item : list){
+            item.setCoverpic(PictureUtil.addPrefix(item.getCoverpic()));
             handleBlog(item);
         }
         blogPage.setBlogList(list);
@@ -70,6 +72,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         page = blogMapper.selectPage(page, wrapper);
         List<Blog> blogList = page.getRecords();
         for (Blog blog1 : blogList){
+            blog1.setCoverpic(PictureUtil.addPrefix(blog1.getCoverpic()));
             handleBlog(blog1);
         }
         return TableDataInfo.suss(blogList, page.getTotal(), "查询成功");
@@ -78,6 +81,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
     @Override
     public Map<String, List> getSortArticles() {
         List<Blog> list = blogMapper.selectAllOrderBysid();
+        list.forEach(blog -> {blog.setCoverpic(PictureUtil.addPrefix(blog.getCoverpic()));});
         Map<String,List> map = new HashMap<>();
         Iterator it =  list.iterator();
         String sid = null;
@@ -103,6 +107,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
     @Override
     public BlogVo selectOne(String uid, String userUid) {
         BlogVo blog = blogMapper.selectOneByUid(uid, userUid);
+        blog.setCoverpic(PictureUtil.addPrefix(blog.getCoverpic()));
         handleBlogVo(blog);
         return blog;
     }
@@ -225,6 +230,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         wrapper.orderByDesc(Blog::getClickCount);
         page = blogMapper.selectPage(page, wrapper);
         List<Blog> list = page.getRecords();
+        list.forEach(blog -> {blog.setCoverpic(PictureUtil.addPrefix(blog.getCoverpic()));});
         blogPage.setBlogList(list);
         return blogPage;
     }
@@ -240,6 +246,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         page = blogMapper.selectPage(page, wrapper);
         List<Blog> list = page.getRecords();
         for(Blog blog : list){
+            blog.setCoverpic(PictureUtil.addPrefix(blog.getCoverpic()));
             String tagsUid = blog.getTagUid();
             String[] tagsUidArray = tagsUid.split(",");
             List<Tag> tagList = new ArrayList();

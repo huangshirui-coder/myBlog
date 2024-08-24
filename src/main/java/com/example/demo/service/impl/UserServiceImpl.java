@@ -10,6 +10,7 @@ import com.example.demo.entity.User;
 import com.example.demo.global.Result;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.service.UserService;
+import com.example.demo.utils.PictureUtil;
 import com.example.demo.utils.RedisCache;
 import com.example.demo.utils.SecurityUtils;
 import com.example.demo.utils.StringUtils;
@@ -28,6 +29,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 用户类服务实现类
@@ -93,6 +95,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 //        page = userMapper.selectPage(page, wrapper);
 //        TableDataInfo tableDataInfo = TableDataInfo.suss(page.getRecords(), page.getTotal(), "查询成功");
         List<User> list = userMapper.pageList(user, searchKey, pageDomain);
+        list.forEach(u -> {u.setAvatar(PictureUtil.addPrefix(u.getAvatar()));});
         TableDataInfo tableDataInfo = TableDataInfo.suss(list, list.size(), "查询成功");
         return tableDataInfo;
     }
@@ -127,7 +130,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public User getUserById(String id) {
-        return userMapper.selectById(id);
+        User user = userMapper.selectById(id);
+        user.setAvatar(PictureUtil.addPrefix(user.getAvatar()));
+        return user;
     }
 
     @Override
