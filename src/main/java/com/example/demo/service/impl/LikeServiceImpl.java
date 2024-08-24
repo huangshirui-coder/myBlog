@@ -38,6 +38,21 @@ public class LikeServiceImpl extends ServiceImpl<LikeMapper, Like> implements Li
     }
 
     @Override
+    public int insertLike(String blogUid, String userUid) {
+        String uid = StringUtils.getUUID();
+        Like like = new Like(uid, userUid, blogUid);
+        return likeMapper.insert(like);
+    }
+
+    @Override
+    public int deleteLike(Like like) {
+        LambdaQueryWrapper<Like> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Like::getUid, like.getUid());
+        return likeMapper.delete(wrapper);
+    }
+
+
+    @Override
     public Like getLikeByUserUidAndBlogUid(String userUid, String blogUid) {
         return likeMapper.getLikeByUserUidAndBlogUid(userUid, blogUid);
     }

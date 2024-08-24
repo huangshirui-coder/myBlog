@@ -88,6 +88,12 @@ public class BlogController {
         }
     }
 
+    @ApiOperation(value = "更新点击数", notes = "更新点击数")
+    @GetMapping("updateClickCount")
+    public Result updateClickCount(String uid){
+        return Result.succ(blogService.updateClickCount(uid));
+    }
+
     @ApiOperation(value = "根据uids批量删除博客记录", notes = "根据uids批量删除博客记录")
     @GetMapping("deleteByUidList")
     public Result deleteByUidList(String uids){
@@ -120,6 +126,12 @@ public class BlogController {
     @GetMapping("updateLikeCount")
     public Result updateLikeCount(@RequestParam String uid, @RequestParam String userUid, @RequestParam boolean flag){
         return blogService.updateLikeCount(uid, userUid, flag);
+    }
+
+    @ApiOperation(value = "收藏功能接口", notes = "收藏功能接口")
+    @GetMapping("updateRecordCount")
+    public Result updateRecordCount(@RequestParam String uid, @RequestParam String userUid, @RequestParam boolean flag){
+        return blogService.updateRecordCount(uid, userUid, flag);
     }
 
     @ApiOperation(value = "修改可见状态")

@@ -12,7 +12,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @TableName("t_like")
 public class Like implements Serializable {
-    @TableId(type = IdType.AUTO)
     private String uid;
 
     private String userUid;

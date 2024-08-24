@@ -12,7 +12,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @TableName("t_record")
 public class Record implements Serializable {
-    @TableId(type = IdType.AUTO)
     private String uid;
 
     private String userUid;

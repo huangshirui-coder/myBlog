@@ -19,7 +19,6 @@ public class Comment extends Model {
     /*
      主键ID
      */
-    @TableId(type = IdType.AUTO)
     private String uid;
 
     /*

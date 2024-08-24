@@ -55,7 +55,18 @@
 
     <update id="updateCommentCount">
         update t_blog
-        set comment_count = comment_count + 1
+        set comment_count = #{count}
+        where uid = #{uid}
+    </update>
+
+    <update id="updateRecordCount">
+        update t_blog
+        <if test="flag == true">
+            set collect_count = collect_count - 1
+        </if>
+        <if test="flag == false">
+            set collect_count = collect_count + 1
+        </if>
         where uid = #{uid}
     </update>
 

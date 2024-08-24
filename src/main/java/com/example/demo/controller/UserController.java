@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.User;
 import com.example.demo.global.Result;
+import com.example.demo.service.UserService;
 import com.example.demo.service.impl.LoginServiceImpl;
 import com.example.demo.service.impl.UserServiceImpl;
 import com.example.demo.web.page.TableDataInfo;
@@ -20,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/user")
 public class UserController {
     @Autowired
-    UserServiceImpl userService;
+    UserService userService;
 
     /*
      * @Author Huang
@@ -51,5 +52,16 @@ public class UserController {
     @ApiOperation(value = "根据id修改启用状态")
     public Result changeUserStatus(User user){
         return userService.changeUserStatus(user);
+    }
+
+    @ApiOperation(value = "更新用户信息")
+    @PostMapping("update")
+    public Result updateUser(@RequestBody User user){
+        int flag = userService.updateUser(user);
+        User result = null;
+        if(flag > 0){
+            result = userService.getUserById(user.getId());
+        }
+        return Result.succ(result);
     }
 }

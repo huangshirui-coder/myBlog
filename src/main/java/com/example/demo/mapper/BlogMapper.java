@@ -27,10 +27,11 @@ public interface BlogMapper extends BaseMapper<Blog> {
      */
     int updateLikeCount(String uid, boolean flag);
 
+    int updateRecordCount(String uid, boolean flag);
     /*
     评论数+1
      */
-    int updateCommentCount(String uid);
+    int updateCommentCount(String uid, int count);
 
     /*
     根据blog uid单条查询

@@ -37,7 +37,7 @@ public class EmailController {
                 + "\n本次请求的邮件验证码为:" + verCode + ",本验证码 5 分钟内效，请及时输入。（请勿泄露此验证码）\n"
                 + "\n如非本人操作，请忽略该邮件。\n(这是一封通过自动发送的邮件，请不要直接回复）";
         toEmail.setContent(content);
-        redisCache.setCacheObject(toEmail.getTos(), verCode, 5, TimeUnit.MINUTES);
+        redisCache.setCacheObject(toEmail.getTos(), verCode, 1, TimeUnit.MINUTES);
         redisCache.getCacheObject(toEmail.getTos());
         return mailService.sendTextMail(toEmail.getTos(), toEmail.getSubject(), toEmail.getContent());
     }

@@ -8,6 +8,9 @@ import com.example.demo.mapper.RecordMapper;
 
 public interface RecordService extends IService<Record> {
     Result insertIfNotIn(String blogUid, String userUid);
+    int insertRecord(String blogUid, String userUid);
+
+    int deleteRecord(Record record);
 
     Record selectByBlogUidAndUserUid(String blogUid, String userUid);
 }

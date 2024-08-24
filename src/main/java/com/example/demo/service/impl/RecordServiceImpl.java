@@ -3,6 +3,7 @@ package com.example.demo.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.demo.entity.Like;
 import com.example.demo.entity.Record;
 import com.example.demo.global.Result;
 import com.example.demo.mapper.RecordMapper;
@@ -35,6 +36,20 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
         }else {
             return Result.fail("操作失败");
         }
+    }
+
+    @Override
+    public int insertRecord(String blogUid, String userUid) {
+        String uid = StringUtils.getUUID();
+        Record record = new Record(uid, userUid, blogUid);
+        return recordMapper.insert(record);
+    }
+
+    @Override
+    public int deleteRecord(Record record) {
+        LambdaQueryWrapper<Record> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Record::getUid, record.getUid());
+        return recordMapper.delete(wrapper);
     }
 
     @Override

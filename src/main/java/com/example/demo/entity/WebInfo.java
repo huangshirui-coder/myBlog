@@ -52,4 +52,8 @@ public class WebInfo extends Model {
      * 网站页脚
      */
     private String webFootor;
+
+    private String loginCover;
+
+    private String adminLoginCover;
 }

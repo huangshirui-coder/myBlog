@@ -97,7 +97,7 @@ public interface BlogService extends IService<Blog> {
     /*
     评论数+1
      */
-    public Result updateCommentCount(String uid);
+    public Result updateCommentCount(String uid, int count);
 
     /*
         获取热门博客

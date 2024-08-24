@@ -32,7 +32,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     public Result insert(Comment comment) {
         int flag = commentMapper.insert(comment);
         if (flag > 0) {
-            blogService.updateCommentCount(comment.getBlogUid());
+            int count = getCount(comment.getBlogUid());
+            blogService.updateCommentCount(comment.getBlogUid(), count);
             return Result.succ("插入成功");
         }else {
             return Result.fail("插入失败");
@@ -93,19 +94,19 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
     @Override
     public Result deleteByUid(String uid) {
-        int flag = commentMapper.delete(new LambdaQueryWrapper<Comment>().eq(Comment::getUid, uid));
-        if (flag > 0) {
-            return Result.succ("删除成功");
-        }else {
-            return Result.fail("删除失败");
-        }
+        commentMapper.delete(new LambdaQueryWrapper<Comment>().eq(Comment::getUid, uid));
+        commentMapper.delete(new LambdaQueryWrapper<Comment>().eq(Comment::getParentId, uid));
+        int count = getCount(uid);
+        blogService.updateCommentCount(uid, count);
+        return Result.succ("删除成功");
+
     }
 
     @Override
-    public Result getCount(String blogUid) {
+    public int getCount(String blogUid) {
         LambdaQueryWrapper<Comment> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Comment::getBlogUid, blogUid);
-        return Result.succ(commentMapper.selectCount(wrapper));
+        return commentMapper.selectCount(wrapper);
     }
 
     @Override

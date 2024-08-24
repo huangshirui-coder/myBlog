@@ -11,10 +11,7 @@ import com.example.demo.global.Result;
 import com.example.demo.mapper.BlogMapper;
 import com.example.demo.pojo.BlogPage;
 import com.example.demo.pojo.Pagination;
-import com.example.demo.service.BlogService;
-import com.example.demo.service.BlogSortService;
-import com.example.demo.service.LikeService;
-import com.example.demo.service.TagService;
+import com.example.demo.service.*;
 import com.example.demo.utils.StringUtils;
 import com.example.demo.vo.BlogVo;
 import com.example.demo.web.page.PageDomain;
@@ -24,6 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collector;
@@ -38,6 +36,8 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
     BlogSortService blogSortService;
     @Autowired
     LikeService likeService;
+    @Autowired
+    RecordService recordService;
 
     @Override
     public BlogPage selectAll(Pagination pagination) {
@@ -165,11 +165,16 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         Like searLike = likeService.getLikeByUserUidAndBlogUid(userUid, uid);
         int result = 0;
         if (searLike == null) {
-            result = blogMapper.updateLikeCount(uid, false);
+            int f = likeService.insertLike(uid, userUid);
+            if (f > 0){
+                result = blogMapper.updateLikeCount(uid, false);
+            }
         }else {
-            result = blogMapper.updateLikeCount(uid, true);
+            int f = likeService.deleteLike(searLike);
+            if (f > 0){
+                result = blogMapper.updateLikeCount(uid, true);
+            }
         }
-        likeService.insertIfNotIn(uid, userUid);
         if (result > 0){
             return Result.succ("更新成功");
         }else {
@@ -179,13 +184,30 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 
     @Override
     public Result updateRecordCount(String uid, String userUid, boolean flag) {
-        return null;
+        Record record = recordService.selectByBlogUidAndUserUid(uid, userUid);
+        int result = 0;
+        if (record == null) {
+            int f = recordService.insertRecord(uid, userUid);
+            if (f > 0){
+                result = blogMapper.updateRecordCount(uid, false);
+            }
+        }else {
+            int f = recordService.deleteRecord(record);
+            if (f > 0){
+                result = blogMapper.updateRecordCount(uid, true);
+            }
+        }
+        if (result > 0){
+            return Result.succ("更新成功");
+        }else {
+            return Result.fail("更新失败");
+        }
     }
 
 
     @Override
-    public Result updateCommentCount(String uid) {
-        int flag = blogMapper.updateCommentCount(uid);
+    public Result updateCommentCount(String uid, int count) {
+        int flag = blogMapper.updateCommentCount(uid, count);
         if (flag > 0){
             return Result.succ("更新成功");
         }else {
@@ -274,4 +296,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         List<Tag> tagList = tagService.getByTagList(tagUidList);
         blog.setTagList(tagList);
     }
+
+
+
 }

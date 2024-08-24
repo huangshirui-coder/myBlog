@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.BlackIpMapper">
+    <delete id="deleteByBlackId">
+        delete from t_black_ip where black_id = #{blackId}
+    </delete>
+
+    <select id="selectBlackIpByBlackId" resultType="com.example.demo.entity.BlackIp">
+        select blakc_ip, black_ip, black_reason, stop_time, create_time, create_by from t_black_ip where blakc_id = #{blackId}
+    </select>
+
+    <update id="updateStopTimeByBlackId">
+        update t_black_ip set stop_time = #{stopTime} where black_id = #{blackId}
+    </update>
+</mapper>

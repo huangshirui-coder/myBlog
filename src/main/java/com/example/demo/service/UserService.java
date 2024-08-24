@@ -15,14 +15,13 @@ public interface UserService extends IService<User> {
 
     public Result register(User user);
 
-    public User getUserById(Integer id);
-
     TableDataInfo pageList(User user, String searchKey, PageDomain pageDomain);
 
     Result changeUserType(User user);
 
     Result changeUserStatus(User user);
 
+    User getUserById(String id);
 
-
+    int updateUser(User user);
 }

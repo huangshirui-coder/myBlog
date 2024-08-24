@@ -1,6 +1,8 @@
 package com.example.demo.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.demo.dto.LoginUser;
@@ -9,6 +11,7 @@ import com.example.demo.global.Result;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.service.UserService;
 import com.example.demo.utils.RedisCache;
+import com.example.demo.utils.SecurityUtils;
 import com.example.demo.utils.StringUtils;
 import com.example.demo.web.page.PageDomain;
 import com.example.demo.web.page.TableDataInfo;
@@ -79,11 +82,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public User getUserById(Integer id) {
-        return userMapper.selectById(id);
-    }
-
-    @Override
     public TableDataInfo pageList(User user, String searchKey, PageDomain pageDomain) {
 //        Page page = new Page(pageDomain.getPageNum(), pageDomain.getPageSize());
 //        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
@@ -125,6 +123,26 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }else{
             return Result.fail("更新失败");
         }
+    }
+
+    @Override
+    public User getUserById(String id) {
+        return userMapper.selectById(id);
+    }
+
+    @Override
+    public int updateUser(User user) {
+        user.setUpdateBy(SecurityUtils.getLoginUser());
+        user.setUpdateTime(new Date());
+        LambdaUpdateWrapper<User> wrapper= new LambdaUpdateWrapper<>();
+        if (StringUtils.isNotBlank(user.getEmail())){
+            wrapper.eq(User::getId, user.getId());
+        }else {
+            wrapper = Wrappers.<User>lambdaUpdate()
+                    .set(User::getEmail, null)
+                    .eq(User::getId, user.getId());
+        }
+        return userMapper.update(user, wrapper);
     }
 
 

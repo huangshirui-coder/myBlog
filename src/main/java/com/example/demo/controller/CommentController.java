@@ -47,7 +47,7 @@ public class CommentController {
     @ApiOperation(notes = "查询该博客总评论数", value = "查询该博客总评论数")
     @GetMapping("getCommentCount")
     public Result getCount(@RequestParam String source){
-        return commentService.getCount(source);
+        return Result.succ(commentService.getCount(source));
     }
 
     @PostMapping("updateState")

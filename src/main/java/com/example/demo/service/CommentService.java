@@ -17,7 +17,7 @@ public interface CommentService extends IService<Comment> {
 
     Result deleteByUid(String uid);
 
-    Result getCount(String blogUid);
+    int getCount(String blogUid);
 
     TableDataInfo getListWithSearchParam(Comment comment, PageDomain pageDomain);
 
