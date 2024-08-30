@@ -31,5 +31,4 @@ public interface VisitService extends IService<Visit> {
     查询访问榜省份前10和总访问次数
      */
     Map<String, Object> selectProvinceTen();
-
 }

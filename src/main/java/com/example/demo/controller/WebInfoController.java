@@ -60,5 +60,11 @@ public class WebInfoController {
         }
     }
 
+    @GetMapping("visitCount")
+    public Result getCount(){
+        int count = visitService.count();
+        return Result.succ(count);
+    }
+
 
 }

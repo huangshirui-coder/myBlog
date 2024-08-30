@@ -155,4 +155,12 @@ public class BlogController {
             return Result.fail("操作失败");
         }
     }
+
+    @GetMapping("blogCount")
+    public Result blogCount(){
+        int count = blogService.count();
+        return Result.succ(count);
+    }
+
+
 }
