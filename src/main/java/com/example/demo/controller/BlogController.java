@@ -162,5 +162,14 @@ public class BlogController {
         return Result.succ(count);
     }
 
+    @GetMapping("getLikeBlogByUser")
+    public TableDataInfo getLikeBlogByUser(@RequestParam String userUid, HttpServletRequest request){
+        return blogService.getLikeBlogByUser(userUid, TableSupport.getPageDomain(request));
+    }
+
+    @GetMapping("getRecordBlogByUser")
+    public TableDataInfo getRecordBlogByUser(@RequestParam String userUid, HttpServletRequest request){
+        return blogService.getRecordBlogByUser(userUid, TableSupport.getPageDomain(request));
+    }
 
 }

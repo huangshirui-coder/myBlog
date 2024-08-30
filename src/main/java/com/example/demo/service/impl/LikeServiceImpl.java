@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.demo.entity.Like;
 import com.example.demo.global.Result;
@@ -10,6 +11,8 @@ import com.example.demo.utils.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class LikeServiceImpl extends ServiceImpl<LikeMapper, Like> implements LikeService {
@@ -55,5 +58,13 @@ public class LikeServiceImpl extends ServiceImpl<LikeMapper, Like> implements Li
     @Override
     public Like getLikeByUserUidAndBlogUid(String userUid, String blogUid) {
         return likeMapper.getLikeByUserUidAndBlogUid(userUid, blogUid);
+    }
+
+    @Override
+    public List<Like> getLikeByUserUid(String userUid) {
+        QueryWrapper<Like> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(Like::getUserUid, userUid);
+        List<Like> list = likeMapper.selectList(wrapper);
+        return list;
     }
 }
