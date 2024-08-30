@@ -155,4 +155,21 @@ public class BlogController {
             return Result.fail("操作失败");
         }
     }
+
+    @GetMapping("blogCount")
+    public Result blogCount(){
+        int count = blogService.count();
+        return Result.succ(count);
+    }
+
+    @GetMapping("getLikeBlogByUser")
+    public TableDataInfo getLikeBlogByUser(@RequestParam String userUid, HttpServletRequest request){
+        return blogService.getLikeBlogByUser(userUid, TableSupport.getPageDomain(request));
+    }
+
+    @GetMapping("getRecordBlogByUser")
+    public TableDataInfo getRecordBlogByUser(@RequestParam String userUid, HttpServletRequest request){
+        return blogService.getRecordBlogByUser(userUid, TableSupport.getPageDomain(request));
+    }
+
 }

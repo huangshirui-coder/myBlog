@@ -109,4 +109,8 @@ public interface BlogService extends IService<Blog> {
     Result changeStatus(Blog blog);
 
     int changeOpenComment(Blog blog);
+
+    TableDataInfo getLikeBlogByUser(String uid, PageDomain pageDomain);
+
+    TableDataInfo getRecordBlogByUser(String userUid, PageDomain pageDomain);
 }

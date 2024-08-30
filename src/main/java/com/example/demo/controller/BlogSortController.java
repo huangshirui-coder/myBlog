@@ -60,4 +60,10 @@ public class BlogSortController {
     public Result updateStatus(@RequestBody BlogSort blogSort){
         return blogSortService.updateStatus(blogSort);
     }
+
+    @GetMapping("blogSortCount")
+    public Result blogSortCount(){
+        int count = blogSortService.count();
+        return Result.succ(count);
+    }
 }

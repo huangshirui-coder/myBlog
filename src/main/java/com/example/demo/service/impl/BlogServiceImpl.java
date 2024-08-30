@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -26,6 +27,7 @@ import javax.annotation.Resource;
 import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Service
 public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements BlogService {
@@ -282,6 +284,36 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         UpdateWrapper<Blog> wrapper = new UpdateWrapper<>();
         wrapper.eq("uid", blog.getUid());
         return blogMapper.update(blog, wrapper);
+    }
+
+    @Override
+    public TableDataInfo getLikeBlogByUser(String userUid, PageDomain pageDomain) {
+        List<Like> likeList = likeService.getLikeByUserUid(userUid);
+        List<String> blogUid = likeList.stream().map(Like::getBlogUid).collect(Collectors.toList());
+        Page page = new Page(pageDomain.getPageNum(), pageDomain.getPageSize());
+        QueryWrapper<Blog> wrapper = new QueryWrapper<>();
+        wrapper.lambda().in(Blog::getUid, blogUid);
+        page = blogMapper.selectPage(page, wrapper);
+        List<Blog> blogList = page.getRecords();
+        for (Blog blog : blogList) {
+            handleBlog(blog);
+        }
+        return TableDataInfo.suss(blogList, page.getTotal(), "查询成功！");
+    }
+
+    @Override
+    public TableDataInfo getRecordBlogByUser(String userUid, PageDomain pageDomain) {
+        List<Record> recordList = recordService.getRecordByUserUid(userUid);
+        List<String> blogUid = recordList.stream().map(Record::getBlogUid).collect(Collectors.toList());
+        Page page = new Page(pageDomain.getPageNum(), pageDomain.getPageSize());
+        QueryWrapper<Blog> wrapper = new QueryWrapper<>();
+        wrapper.lambda().in(Blog::getUid, blogUid);
+        page = blogMapper.selectPage(page, wrapper);
+        List<Blog> blogList = page.getRecords();
+        for (Blog blog : blogList) {
+            handleBlog(blog);
+        }
+        return TableDataInfo.suss(blogList, page.getTotal(), "查询成功！");
     }
 
     void handleBlogVo(BlogVo blog){

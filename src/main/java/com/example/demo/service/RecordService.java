@@ -6,6 +6,8 @@ import com.example.demo.entity.Record;
 import com.example.demo.global.Result;
 import com.example.demo.mapper.RecordMapper;
 
+import java.util.List;
+
 public interface RecordService extends IService<Record> {
     Result insertIfNotIn(String blogUid, String userUid);
     int insertRecord(String blogUid, String userUid);
@@ -13,4 +15,6 @@ public interface RecordService extends IService<Record> {
     int deleteRecord(Record record);
 
     Record selectByBlogUidAndUserUid(String blogUid, String userUid);
+
+    List<Record> getRecordByUserUid(String userUid);
 }

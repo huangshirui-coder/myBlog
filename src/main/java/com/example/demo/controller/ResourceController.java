@@ -31,8 +31,8 @@ public class ResourceController {
             // 获取文件名
             String fileName = file.getOriginalFilename().substring(0, file.getOriginalFilename().lastIndexOf(".")) + StringUtils.getUUID().substring(0,4)
                     + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-            String abselutePath = "/huang/demoFile/fileResource/";
-            String filePath = "/fileResource/";
+            String abselutePath = "E:\\workspace\\myBlog\\demo-vue\\public\\fileResource\\";
+            String filePath = "\\fileResource\\";
             // 保存文件到指定位置
             file.transferTo(new File(abselutePath + fileName));
             return Result.succ(filePath + fileName);
