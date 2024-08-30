@@ -149,6 +149,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 
     @Override
     public Result updateOne(Blog blog) {
+        blog.setCoverpic(PictureUtil.removeBaseUrl(blog.getCoverpic()));
         int flag = blogMapper.update(blog,new UpdateWrapper<>());
         if (flag > 0){
             return Result.succ("更新成功");

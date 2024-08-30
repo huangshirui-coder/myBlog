@@ -137,6 +137,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public int updateUser(User user) {
+        user.setAvatar(PictureUtil.removeBaseUrl(user.getAvatar()));
         user.setUpdateBy(SecurityUtils.getLoginUser());
         user.setUpdateTime(new Date());
         LambdaUpdateWrapper<User> wrapper= new LambdaUpdateWrapper<>();

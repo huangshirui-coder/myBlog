@@ -9,4 +9,22 @@ public class PictureUtil {
         }
         return null;
     }
+
+    public static String removeBaseUrl(String originalUrl) {
+        if (originalUrl == null) {
+            return originalUrl; // 返回原始字符串
+        }
+
+        if (originalUrl.startsWith(prefix)) {
+            // 获取 baseUrl 的长度
+            int baseLength = prefix.length();
+
+            // 截取剩余的部分
+            return originalUrl.substring(baseLength);
+        } else {
+            return originalUrl; // 不包含 baseUrl，返回原始字符串
+        }
+    }
+
+
 }

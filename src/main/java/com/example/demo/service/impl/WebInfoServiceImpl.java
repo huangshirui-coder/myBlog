@@ -35,6 +35,10 @@ public class WebInfoServiceImpl extends ServiceImpl<WebInfoMapper, WebInfo> impl
 
     @Override
     public int update(WebInfo webInfo) {
+        webInfo.setCover(PictureUtil.removeBaseUrl(webInfo.getCover()));
+        webInfo.setWebHead(PictureUtil.removeBaseUrl(webInfo.getWebHead()));
+        webInfo.setLoginCover(PictureUtil.removeBaseUrl(webInfo.getLoginCover()));
+        webInfo.setAdminLoginCover(PictureUtil.removeBaseUrl(webInfo.getAdminLoginCover()));
         LambdaQueryWrapper<WebInfo> wrapper = new LambdaQueryWrapper();
         wrapper.eq(WebInfo::getId, webInfo.getId());
         return webInfoMapper.update(webInfo, wrapper);
