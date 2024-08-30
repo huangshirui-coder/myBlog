@@ -11,7 +11,7 @@ public class PictureConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         //文件磁盘图片url 映射
         //配置server虚拟路径，handler为前台访问的目录，locations为files相对应的本地路径
-        registry.addResourceHandler("/fileResource/**").addResourceLocations("file://E:/workspace/myBlog/demo-vue/public/fileResource/");
+        registry.addResourceHandler("/fileResource/**").addResourceLocations("http://203.195.195.64:8080/huang/demoFile/fileResource/");
     }
 
 
